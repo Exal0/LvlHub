@@ -936,13 +936,13 @@ header {
   font-weight: bold;
   letter-spacing: 0.2em;
   color: #f5d88a;
-  margin-right: auto;           /* pousse le reste à droite */
+  margin-right: auto;        
 }
 
 
 
 .header-burger {
-  display: none;                /* caché par défaut */
+  display: none;                
   font-size: 32px;
   color: #f5d88a;
   cursor: pointer;

@@ -1,38 +1,10 @@
 <!DOCTYPE html>
 <html lang="fr">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../assets/css/style.css">
-    <title>LvLHub</title>
-</head>
+<?php include 'app/views/partials/head.php'?>
 
 <body class="bg-all">
-      <header class="top-0">
 
-        <nav class="">
-            <ul class="flex ul-style justify-center gap-10p border-bot  ">
-                <a href="#" class="flex items-center text-white">
-                    <li class="w-100p text-3xl"> LvLHub </li>
-                </a>
-                <a href="/pages/index.html" class="flex items-center text-black">
-                    <li class="text-white text-xl ">Accueil</li>
-                </a>
-                <a href="./gamepage.html" class="flex items-center text-black">
-                    <li class="text-white text-xl">Jeux</li>
-                </a>
-                <a href="#" class="flex items-center text-black">
-                    <li class="text-white text-xl">Support</li>
-                </a>
-
-             <li class="header-burger" id="header-burger">☰</li>
-
-            </ul>
-        </nav>
-
-    </header>
-
+<?php include 'app/views/partials/header.php'?>
 
 
     <main>
@@ -61,7 +33,7 @@
     <div class="hero__presentation-txt">
       <h2>Un site communautaire moderne dédié aux joueurs, proposant des guides clairs pour mieux comprendre les mécaniques, les builds et les stratégies de différents jeux.</h2>
       <div class="hero-div__btn">
-        <a href="/pages/Champions__page.html" class="bg-alice hero__btn">Champions</a>
+        <a href="./app/views/Champions__page.php" class="bg-alice hero__btn">Champions</a>
         <a href="./gamepage.html" class="bg-alice hero__btn">Jeux</a>
         <a href="/pages/page-lol.html" class="bg-alice hero__btn">Builds</a>
       </div>
@@ -80,11 +52,10 @@
     </main>
 
 
+<?php include __DIR__ . '/app/views/partials/footer.php'; ?>
 
-    <footer></footer>
 
-
-    <script src="/assets/js/script.js"></script>
+<script src="./assets/js/script.js"></script>
 </body>
 
 </html>

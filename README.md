@@ -1,4 +1,4 @@
-# Let's Cook - Application de Recettes
+# LvlHub - Application de Recettes
 
 ![Screenshot](./images/screenshot.png)
 
