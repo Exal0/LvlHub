@@ -1,184 +1,113 @@
-//REVIEW - Si besoin de reutiliser 
-const VERSION = '16.1.1'; //Version du patch 
-const LANG = 'fr_FR';  //langage de la recuperation des donnees de l'api
-
-// NOTE - Premiere ETAPE AFFicher les Noms de champions dans la page 
-
-console.log("JS chargé"); //NOTE - test link Test Ok
-
-console.log("avant le fetch");
-
+const VERSION = '14.1.1'; 
+const LANG = 'fr_FR';  
 let allChampions = [];
 
-const championContainer = document.getElementById("champions");
+const championContainer = document.getElementById("champions-container");
+const modal = document.getElementById("champion-modal");
 
-// FETCH des champions
+// 1. FETCH DES DONNÉES
+console.log("🚀 LvlHub Engine: Loading...");
+
 fetch(`https://ddragon.leagueoflegends.com/cdn/${VERSION}/data/${LANG}/champion.json`)
-  .then(response => response.json())
+  .then(res => res.json())
   .then(data => {
-    allChampions = Object.values(data.data); // NOTE - Stocke tous les champions
-    console.log(data);
-    
-    displayChampions(allChampions); // NOTE - Affiche tout au chargement
-  });
+    allChampions = Object.values(data.data);
+    displayChampions(allChampions);
+  })
+  .catch(err => console.error("Erreur API:", err));
 
-
-// FONCTION D’AFFICHAGE
+// 2. AFFICHAGE DE LA GRILLE
 function displayChampions(champions) {
-  championContainer.innerHTML = ""; // NOTE - Vide le container avant d’afficher
+  if (!championContainer) return;
+  championContainer.innerHTML = ""; 
 
   champions.forEach(champ => {
+    const card = document.createElement('div');
+    card.className = "group relative bg-gray-900/40 border border-white/10 rounded-2xl overflow-hidden hover:border-blue-500/50 transition-all duration-300 cursor-pointer aspect-[3/4]";
 
-    const card = document.createElement('div'); 
-    card.classList.add('champ-card');
+    card.innerHTML = `
+        <div class="w-full h-full overflow-hidden">
+            <img src="https://ddragon.leagueoflegends.com/cdn/img/champion/loading/${champ.id}_0.jpg" 
+                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="${champ.name}">
+        </div>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-transparent to-transparent flex flex-col justify-end p-5">
+            <h3 class="text-2xl font-black italic uppercase text-white group-hover:text-blue-400 transition-colors">${champ.name}</h3>
+            <p class="text-blue-400 text-[10px] uppercase font-bold tracking-widest">${champ.title}</p>
+        </div>`;
 
-    const img = document.createElement('img');
-    img.src = `https://ddragon.leagueoflegends.com/cdn/img/champion/loading/${champ.id}_0.jpg`;
-    img.alt = champ.name;
-
-    const name = document.createElement('span');
-    name.textContent = champ.name;
-
-    card.appendChild(img);
-    card.appendChild(name);
-
-    card.addEventListener("click", () => {
-  openModal(champ);
-});
-
-
+    card.addEventListener("click", () => openModal(champ));
     championContainer.appendChild(card);
   });
 }
 
-const allFilter = document.getElementById("filter-all");
-
-allFilter.addEventListener("click", () => {
-  displayChampions(allChampions);
-});
-
-const fighterFilter = document.getElementById("filter-fighter");
-
-fighterFilter.addEventListener("click", () => {
-  const filtered = allChampions.filter(champ => champ.tags.includes("Fighter"));
-  displayChampions(filtered);
-});
-
-const mageFilter = document.getElementById("filter-mage");
-
-mageFilter.addEventListener("click", () => {
-  const filtered = allChampions.filter(champ => champ.tags.includes("Mage"));
-  displayChampions(filtered);
-});
-
-const marksmanFilter = document.getElementById("filter-marksman");
-
-marksmanFilter.addEventListener("click", () => {
-  const filtered = allChampions.filter(champ => champ.tags.includes("Marksman"));
-  displayChampions(filtered);
-});
-
-
-const assassinFilter = document.getElementById("filter-assassin");
-
-assassinFilter.addEventListener("click", () => {
-  const filtered = allChampions.filter(champ => champ.tags.includes("Assassin"));
-  displayChampions(filtered);
-});
-
-const supportFilter = document.getElementById("filter-support");
-
-supportFilter.addEventListener("click", () => {
-  const filtered = allChampions.filter(champ => champ.tags.includes("Support"));
-  displayChampions(filtered);
-});
-const tankFilter = document.getElementById("filter-tank");
-
-tankFilter.addEventListener("click", () => {
-  const filtered = allChampions.filter(champ => champ.tags.includes("Tank"));
-  displayChampions(filtered);
-});
-
-
-let searchInput = document.getElementById("search-champion");
-searchInput.addEventListener("input", ()=> {
-  const query = searchInput.value.toLowerCase();
-
-  const filtered = allChampions.filter(champ =>
-    champ.name.toLowerCase().includes(query)
-  );
-  displayChampions(filtered)
-})
-
-
-const modal = document.getElementById("champion-modal");
-const modalOverlay = modal.querySelector(".modal-overlay");
-const modalClose = document.getElementById("modal-close");
-
-const modalSplash = document.getElementById("modal-splash");
-const modalName = document.getElementById("modal-name");
-const modalTitle = document.getElementById("modal-title");
-const modalLore = document.getElementById("modal-lore");
-const modalRoles = document.getElementById("modal-roles");
-const modalSpells = document.getElementById("modal-spells");
-
-
+// 3. MODAL
 function openModal(champ) {
-  console.log("OPEN MODAL", champ.id);
+  const modalSplash = document.getElementById("modal-splash");
+  const modalName = document.getElementById("modal-name");
+  const modalTitle = document.getElementById("modal-title");
+  const modalLore = document.getElementById("modal-lore");
+  const modalRoles = document.getElementById("modal-roles");
+  const modalSpells = document.getElementById("modal-spells");
 
-  // Texte
   modalName.textContent = champ.name;
   modalTitle.textContent = champ.title;
   modalLore.textContent = champ.blurb;
-
-  // Image splash
   modalSplash.src = `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champ.id}_0.jpg`;
 
-  // Rôles
   modalRoles.innerHTML = "";
   champ.tags.forEach(tag => {
-    const span = document.createElement("span");
-    span.textContent = tag;
-    modalRoles.appendChild(span);
+    modalRoles.innerHTML += `<span class="px-3 py-1 bg-blue-500/10 border border-blue-500/30 text-blue-400 text-[10px] font-bold rounded-md uppercase tracking-widest">${tag}</span>`;
   });
 
-  // Spells (fetch ICI)
-  modalSpells.innerHTML = "";     // 
-
-  fetch(`https://ddragon.leagueoflegends.com/cdn/16.1.1/data/en_US/champion/${champ.id}.json`)
+  modalSpells.innerHTML = "<div class='text-gray-600 animate-pulse'>...</div>";
+  fetch(`https://ddragon.leagueoflegends.com/cdn/${VERSION}/data/${LANG}/champion/${champ.id}.json`)
     .then(res => res.json())
     .then(data => {
       const spells = data.data[champ.id].spells;
-
-      spells.forEach(spell => {
-        const img = document.createElement("img");
-        img.src = `https://ddragon.leagueoflegends.com/cdn/16.1.1/img/spell/${spell.image.full}`;
-        img.alt = spell.name;
-        img.title = spell.name;
-
-        modalSpells.appendChild(img);
+      modalSpells.innerHTML = ""; 
+      spells.forEach(s => {
+        modalSpells.innerHTML += `<img src="https://ddragon.leagueoflegends.com/cdn/${VERSION}/img/spell/${s.image.full}" class="w-12 h-12 rounded-lg border border-white/10 hover:border-blue-400 transition-all" title="${s.name}">`;
       });
     });
 
-  // Afficher la modal
   modal.classList.remove("hidden");
+  modal.classList.add("flex");
+  document.body.style.overflow = "hidden";
 }
 
+// 4. FILTRES ET RECHERCHE
+const setupFilter = (id, role) => {
+  const btn = document.getElementById(id);
+  if (btn) {
+    btn.addEventListener("click", () => {
+      const filtered = role === 'all' ? allChampions : allChampions.filter(c => c.tags.includes(role));
+      displayChampions(filtered);
+    });
+  }
+};
 
-modalClose.addEventListener("click", () => {
+setupFilter("filter-all", "all");
+setupFilter("filter-fighter", "Fighter");
+setupFilter("filter-mage", "Mage");
+setupFilter("filter-marksman", "Marksman");
+setupFilter("filter-assassin", "Assassin");
+setupFilter("filter-support", "Support");
+setupFilter("filter-tank", "Tank");
+
+const search = document.getElementById("search-champion");
+if (search) {
+  search.addEventListener("input", (e) => {
+    const q = e.target.value.toLowerCase();
+    displayChampions(allChampions.filter(c => c.name.toLowerCase().includes(q)));
+  });
+}
+
+// 5. FERMETURE
+const close = () => {
   modal.classList.add("hidden");
-});
+  modal.classList.remove("flex");
+  document.body.style.overflow = "auto";
+};
 
-modalOverlay.addEventListener("click", () => {
-  modal.classList.add("hidden");
-});
-
-
-const burger = document.getElementById("header-burger");
-const nav = document.querySelector(".header-nav");
-
-burger.addEventListener("click", () => {
-  nav.classList.toggle("active");
-});
-
-
+document.getElementById("modal-close")?.addEventListener("click", close);
+modal.querySelector(".modal-overlay")?.addEventListener("click", close);
