@@ -15,6 +15,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($player) {
             $_SESSION['username'] = $player->getUsername();
             $_SESSION['role'] = $player->getRole();
+            $_SESSION['id'] = $player->getId();
+
 
             header('Location: ../../index.php');
             exit();

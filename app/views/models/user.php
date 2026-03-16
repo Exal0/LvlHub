@@ -1,11 +1,12 @@
 <?php
 class player
 {
-    private $db;
-    private $username;
-    private $email;
-    private $password;
-    private $role;
+    protected $id;
+    protected $db;
+    protected $username;
+    protected $email;
+    protected $password;
+    protected $role;
 
     public function __construct($db, $username, $email, $password, $role = 'user')
     {
@@ -49,11 +50,13 @@ class player
         $stmt->execute([':username' => $username]);
         $user = $stmt->fetch();
 
+
         if ($user && password_verify($password, $user['password'])) {
             $this->username = $user['username'];
             $this->role = $user['role'];
             $this->email = $user['email'];
-            return $this; // Retourne l'objet lui-même
+            $this->id = $user['player_id'];
+            return $this;
         }
         return false;
     }
@@ -67,6 +70,10 @@ class player
     {
         return $this->role;
     }
+    public function getId(){
+        return $this->id;
+    }
+
 
     public function isAdmin()
     {
@@ -74,12 +81,60 @@ class player
     }
 
 
-    public function ShowUser()
+
+    public function changeUser($username, $player_id)
     {
-        $sql = "SELECT username, email, role FROM player";
+        $sql = "UPDATE player SET username = :username WHERE `player`.`player_id`= :player_id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([
+           ':username' => $username,
+            ':player_id' => $player_id
+        ]);
+    }
+}
+
+class admin extends player
+{
+
+    public function showUser()
+    {
+        $sql = "SELECT player_id, username, email, role FROM player";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
-        $user = $stmt->fetchAll();
+        $user = $stmt->fetchall();
         return $user;
     }
+
+    public function deleteUser($player_id)
+    {
+
+        $sql = "SELECT role FROM player WHERE `player`.`player_id`= :player_id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([
+            ':player_id' => $player_id
+        ]);
+        $user = $stmt->fetch();
+
+
+        if ($user['role'] == 'user') {
+            $sql = "DELETE FROM player WHERE `player`.`player_id`= :player_id";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([
+                ':player_id' => $player_id
+            ]);
+        }
+    }
+}
+
+class superadmin extends admin {
+
+public function updateRole($player_id, $role){
+ $sql = "UPDATE player SET role = :role WHERE `player`.`player_id`= :player_id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([
+           ':role' => $role,
+            ':player_id' => $player_id
+        ]);
+}
+
 }
