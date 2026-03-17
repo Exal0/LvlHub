@@ -1,42 +1,81 @@
-# LvlHub - Application de Recettes
+# LvlHub – League of Legends Optimization Platform
 
 ![Screenshot](./images/screenshot.png)
 
-## Description
+## Overview
 
-LvlHub est une plateforme qui aide les joueurs à optimiser leurs builds et leur temps de jeu grâce à des outils mis à jour en temps réel.
+LvlHub is a web platform designed to help League of Legends players optimize their builds, improve decision-making, and manage their playtime efficiently through real-time updated tools.
 
-## Compétences visées
+The project focuses on delivering a clean, responsive, and user-friendly interface while integrating dynamic data from an external API.
 
-### Réaliser des interfaces utilisateur statiques web ou web mobile
+## Learning Objectives
 
-- **Compétences** : Développement de pages web en utilisant HTML5 et CSS3, compréhension de la mise en page responsive.
-- **Exemple** : Codage en HTML5 et CSS3 pour structurer des pages web et appliquer des styles.
+### Build Static Web Interfaces
 
-### Développer la partie dynamique des interfaces utilisateur web ou web mobile
+- Develop structured web pages using HTML5 semantic elements
+- Create responsive layouts with CSS3 (Flexbox & Grid)
+- Ensure accessibility and mobile compatibility
 
-- **Compétences** : Programmation en JavaScript, utilisation de bibliothèques et frameworks pour enrichir l'interaction utilisateur.
-- **Exemple** : Utilisation de JavaScript pour rendre les interfaces interactives.
+### Develop Dynamic User Interfaces
 
-## Fonctionnalités
+- Use JavaScript (ES6) to handle interactivity
+- Fetch and display external data using Fetch API
+- Organize code with JavaScript modules
 
-- Affichage en grille responsive (4 colonnes desktop, 1 colonne mobile)
-- Recherche de Personnage par nom et par Roles
-- Modal de Personnage, afficher son nom, son titre, une description et ses compétences
-- Tri par temps de préparation
-- Page de détails avec ingrédients et instructions
-- Design moderne et accessible
+## Features
 
-## Technologies utilisées
+- Responsive Grid Layout
+  - 4 columns on desktop
+  - 1 column on mobile
 
-- HTML5 (balises sémantiques)
-- CSS3 (Flexbox, Grid, Media Queries)
-- JavaScript ES6 (Fetch API, Modules)
-- API : DummyJSON (https://dummyjson.com/recipes)
+- Search & Filtering
+  - Search champions by name
+  - Filter by roles
+
+- Champion Modal
+  - Name and title
+  - Description
+  - Abilities overview
+
+- Sorting System
+  - Sort by preparation time (adaptable for builds/game data)
+
+
+- Modern UI
+  - Clean design
+  - Neon 
+
+## Technologies
+
+- HTML5 – Semantic structure
+- CSS3 – Flexbox, Grid, Media Queries
+- JavaScript (ES6) – Modules, Fetch API
+- API – 
 
 ## Installation
 
-1. Cloner le repository
 ```bash
-git clone https://github.com/username/letscook.git
-cd letscook
+git clone https://github.com/Exal0/LvlHub.git
+cd LvlHub
+
+Then open index.html in your browser or run a local server:
+
+```bash
+npx serve
+```
+
+## Possible Improvements
+
+- Integration with a real League of Legends API (Riot API)
+- User accounts and saved builds
+- Advanced filtering (items, win rate, meta)
+- Performance optimization and caching
+- Backend integration (Node.js / Express)
+
+## Preview
+
+![alt text](image.png)
+
+## License
+
+This project is for educational purposes.
